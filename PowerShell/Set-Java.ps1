@@ -41,8 +41,16 @@ function Set-Java {
         # Change JAVA_HOME env
         # Replace Java bin path in env:Path
         $java = $javas.Item('Java(' + $choice + ')')
-        $env:JAVA_HOME = $java
-        $env:Path = (($env:Path -split ';' | Where-Object { $_ -notlike '*Program Files\Java\jdk*' }) + ($java + '\bin')) -join ';'
+        $envPath = ((($env:Path -split ';' | Where-Object { $_ -notlike '*Program Files\Java\jdk*' }) + ($java + '\bin')) -join ';')
+
+        # Set for current process
+        $env:JAVA_HOME = $java        
+        $env:Path = $envPath
+        
+        # Run as administrator
+        $sysEnvPath = ((([System.Environment]::GetEnvironmentVariable('Path') -split ';' | Where-Object { $_ -notlike '*Program Files\Java\jdk*' }) + ($java + '\bin')) -join ';')
+        [System.Environment]::SetEnvironmentVariable('JAVA_HOME', $java, [System.EnvironmentVariableTarget]::Machine)
+        [System.Environment]::SetEnvironmentVariable("Path", $sysEnvPath, [System.EnvironmentVariableTarget]::Machine)
     
         Write-Host 'Now Java information: ' -BackgroundColor DarkRed
         & ($env:JAVA_HOME + '\bin\java.exe') '-version'
