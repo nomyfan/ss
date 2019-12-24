@@ -3,14 +3,19 @@
 Copy file between remote server and local machine using scp.
 Write down your servers first, then feel free to copy file any time.
 -------------------------
-Example: CC -LocalPath ./ -Operation Fetch
-Example: CC -LocalPath ./config.json -Operation Push
+Example: Invoke-Scp -LocalPath ./ -Operation Fetch
+Example: Invoke-Scp -LocalPath ./config.json -Operation Push
 #>
-# function CC {  
+# function Invoke-Scp {  
     Param (
         # [CmdletBinding()]
-        [Parameter(Mandatory = $true)][string]$LocalPath,
-        [Parameter(Mandatory = $true)][ValidateSet("Fetch","Push")][string]$Operation
+        [Parameter(Mandatory = $false)]
+        [Alias("p")]
+        [string]$LocalPath = ".",
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("Fetch","Push")]
+        [Alias("o")]
+        [string]$Operation
     )
     $servers = @{
         server1 = @{
