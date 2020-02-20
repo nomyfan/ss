@@ -2,10 +2,8 @@
 -------------------------
 Copy file between remote server and local machine using scp.
 Write down your servers first, then feel free to copy file any time.
-================
-❗❗❗ATTENTION❗❗❗
-================
-Put the servers.json file into PATH or make the variable absolute path.
+
+ATTENTION: Put the servers.json file into the same path or specify the path
 -------------------------
 Example: Invoke-Scp -LocalPath ./ -Operation Fetch
 Example: Invoke-Scp -LocalPath ./config.json -Operation Push
