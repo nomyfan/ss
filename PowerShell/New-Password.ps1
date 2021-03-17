@@ -3,9 +3,9 @@ PSVersion: 5.1
 ---------------------------------------------------------------------
 This script is used to generate a random password with a given length.
 ---------------------------------------------------------------------
-Example1: .\RandomPassword.ps1
-Example2: .\RandomPassword.ps1 -Length 12
-Example3: .\RandomPassword.ps1 -Length 12 -PunctuationType Custom -Punctuation '_','*','^','@'
+Example1: .\New-Password.ps1
+Example2: .\New-Password.ps1 -Length 12
+Example3: .\New-Password.ps1 -Length 12 -PunctuationType Custom -Punctuation '_','*','^','@'
 #>
 
 param (

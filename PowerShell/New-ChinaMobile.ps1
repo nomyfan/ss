@@ -16,6 +16,7 @@ $providers = (ConvertFrom-Json -InputObject $providerJson).psobject.properties
 if (($Unicom + $Telecom + $Mobile) -eq 0) {
     if($Total -eq 0) {
         Write-Error -Message "Please specify how many mobile numbers do you want to generate using -Total"
+        return
     }
     $Unicom = $Total / 3
     $Telecom = $Total / 3
