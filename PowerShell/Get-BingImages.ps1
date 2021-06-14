@@ -31,7 +31,7 @@ if([System.String]::IsNullOrEmpty($SaveTo)) {
 }
 
 if(!(Test-Path -Path $SaveTo)) {
-  Write-Error ("{0} doesn't exit" -f $SaveTo)
+  Write-Error ("$SaveTo doesn't exit")
   return
 }
 
@@ -42,7 +42,7 @@ function ExtractInfo {
     $Url
   )
 
-  $uri = [System.Uri]('https://cn.bing.com{0}' -f $Url)
+  $uri = [System.Uri]("https://cn.bing.com$Url")
   $parsedQuery = [System.Web.HttpUtility]::ParseQueryString($uri.Query)
 
   return [PSCustomObject]@{
@@ -51,7 +51,7 @@ function ExtractInfo {
   }
 }
 
-$uri = 'https://cn.bing.com/HPImageArchive.aspx?format=js&idx={0}&n={1}&mkt=zh-CN' -f $Index,$Count
+$uri = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=$Index&n=$Count&mkt=zh-CN"
 $response = Invoke-WebRequest -Uri $uri
 
 ($response.Content | ConvertFrom-Json).images | ForEach-Object {(ExtractInfo -Url $_.url)} | ForEach-Object -Parallel {
