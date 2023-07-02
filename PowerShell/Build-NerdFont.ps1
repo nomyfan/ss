@@ -27,9 +27,8 @@ function Get-NumberOfLogicalProcessors {
   }
 }
 
-# Test with nerdfonts/patcher(f33f76ae16225574c8b42cb50878bd30bf91547186b659c1a08ce7a98e3fbfa1)
 Get-ChildItem $In -File | ForEach-Object -Parallel {
   $fullName = $_.FullName
   $name = $_.Name
-  Start-Process -PassThru -Wait -FilePath 'docker' -ArgumentList 'run', '--rm', '-v', """${fullName}"":""/in/${name}""", '-v', """${using:Out}"":/out", 'nerdfonts/patcher', '--complete', '--careful', '--makegroups'
+  Start-Process -PassThru -Wait -FilePath 'docker' -ArgumentList 'run', '--rm', '-v', """${fullName}"":""/in/${name}""", '-v', """${using:Out}"":/out", 'nerdfonts/patcher:4.4.0', '--complete', '--careful', '--makegroups', '0'
 } -ThrottleLimit (Get-NumberOfLogicalProcessors)
