@@ -17,7 +17,9 @@ try {
   const stderr = e.stderr.toString().trim();
   if (stderr) {
     if (stderr.includes("fatal: not a git repository")) {
-      execSync(`open https://github.com`);
+      execSync("open https://github.com");
+    } else if (stderr.includes("No such remote")) {
+      execSync("open https://github.com/new");
     } else {
       console.error(stderr);
     }
