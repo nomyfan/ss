@@ -11,7 +11,11 @@ try {
   const match = RE.exec(output);
   if (match) {
     const [, owner, repo] = match;
-    execSync(`open https://github.com/${owner}/${repo}`);
+    const rev = execSync("git rev-parse --abbrev-ref HEAD", {
+      encoding: "utf-8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim();
+    execSync(`open https://github.com/${owner}/${repo}/tree/${rev}`);
   }
 } catch (e) {
   const stderr = e.stderr.toString().trim();
