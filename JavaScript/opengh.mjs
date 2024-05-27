@@ -6,7 +6,7 @@ try {
     stdio: ["ignore", "pipe", "pipe"],
   }).trim();
   const RE =
-    /^(?:git@github\.com:|https:\/\/github\.com\/)([^\/]+)\/([^\/]+)\.git$/;
+    /^(?:git@github\.com:|https:\/\/github\.com\/|ssh:\/\/git@(?:ssh\.)?github.com(?::443)?\/)([^\/]+)\/([^\/]+)\.git$/;
 
   const match = RE.exec(output);
   if (match) {
