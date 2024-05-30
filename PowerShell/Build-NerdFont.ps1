@@ -30,5 +30,5 @@ function Get-NumberOfLogicalProcessors {
 Get-ChildItem $In -File | ForEach-Object -Parallel {
   $fullName = $_.FullName
   $name = $_.Name
-  Start-Process -PassThru -Wait -FilePath 'docker' -ArgumentList 'run', '--rm', '-v', """${fullName}"":""/in/${name}""", '-v', """${using:Out}"":/out", 'nerdfonts/patcher:4.4.0', '--complete', '--careful', '--makegroups', '1', '--quiet'
+  Start-Process -PassThru -Wait -FilePath 'docker' -ArgumentList 'run', '--rm', '-v', """${fullName}"":""/in/${name}""", '-v', """${using:Out}"":/out", 'nerdfonts/patcher:4.14.3', '--complete', '--careful', '--makegroups', '1', '--quiet'
 } -ThrottleLimit (Get-NumberOfLogicalProcessors)
