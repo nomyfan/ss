@@ -22,12 +22,8 @@ function parseOwnerRepo(args) {
 
 const usage = `Usage: ghu [OPTIONS] <owner> <repo> / ghu [OPTIONS] <URL>
 OPTIONS:
---https
-  Using HTTPS protocol.
---ssh
-  Using SSH protocol. Default.
---sh
-  Using SSH protocol over HTTPS port.
+--protocol
+  Values: https | ssh | soh(Default)
 --clone
   Execute \`git clone\`
 `;
@@ -35,20 +31,23 @@ OPTIONS:
 const [owner, repo] = parseOwnerRepo(args);
 
 if (!owner || !repo) {
-  console.error(usage);
+  process.stderr.write(usage);
   process.exit(1);
 }
 
-const https = options.includes("--https");
-const sshOverHttps = options.includes("--sh");
+const protocol = options
+  .find((opt) => opt.startsWith("--protocol="))
+  ?.split("=")[1];
+
 // Exec `git clone`
 const clone = options.includes("--clone");
 
-const url = https
-  ? `https://github.com/${owner}/${repo}.git`
-  : sshOverHttps
-  ? `ssh://git@ssh.github.com/${owner}/${repo}.git`
-  : `git@github.com:${owner}/${repo}.git`;
+const url =
+  protocol === "https"
+    ? `https://github.com/${owner}/${repo}.git`
+    : protocol === "ssh"
+    ? `git@github.com:${owner}/${repo}.git`
+    : `ssh://git@ssh.github.com/${owner}/${repo}.git`;
 
 if (clone) {
   execSync(`git clone ${url}`);
