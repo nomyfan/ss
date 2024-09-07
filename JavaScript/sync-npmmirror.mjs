@@ -3,8 +3,13 @@ const argv = process.argv.slice(2);
 
 const packageName = argv[0];
 
+function exit(message, code = 1) {
+  process.stderr.write(message);
+  process.exit(code);
+}
+
 if (!packageName) {
-  throw new Error("Usage: sync-npmmirror <package-name>");
+  exit("Usage: sync-npmmirror <package-name>\n");
 }
 
 process.stderr.write(`Syncing ${packageName}...\n`);
@@ -19,8 +24,10 @@ const syncResp = await fetch(
 ).then((res) => res.json());
 
 if (!syncResp.ok) {
-  throw new Error(`Failed to sync: ${syncResp}`);
+  exit(`Failed to sync: ${syncResp}`);
 }
+
+process.stderr.write(`Sync started: ${syncResp.logId}\n`);
 
 const MAX_PULL = 10;
 
