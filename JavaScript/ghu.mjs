@@ -10,14 +10,16 @@ const args = argv.filter((arg) => !isOption(arg));
 function parseOwnerRepo(args) {
   const first = args[0];
 
-  let match = /([^\/:]+)[/]([^\/]+)\.git$/.exec(first);
+  const GIT_RE =
+    /^(?:(?:ssh:\/\/git@ssh\.github\.com\/)|(?:git@github\.com:)|(?:https:\/\/github\.com\/))([^\/]+)\/([^\/]+)\.git$/;
+  const URL_RE = /^https:\/\/github.com\/([^\/]+)\/([^\/]+)(?:\/|$)/;
+
+  const match = GIT_RE.exec(first) || URL_RE.exec(first);
   if (match) {
     return [match[1], match[2]];
-  } else if ((match = /([^\/]+)[/]([^\/]+)$/.exec(first))) {
-    return [match[1], match[2]];
-  } else {
-    return [args[0], args[1]];
   }
+
+  return [args[0], args[1]];
 }
 
 const usage = `Usage: ghu [OPTIONS] <owner> <repo> / ghu [OPTIONS] <URL>
@@ -46,12 +48,12 @@ const url =
   protocol === "https"
     ? `https://github.com/${owner}/${repo}.git`
     : protocol === "ssh"
-    ? `git@github.com:${owner}/${repo}.git`
-    : `ssh://git@ssh.github.com/${owner}/${repo}.git`;
+      ? `git@github.com:${owner}/${repo}.git`
+      : `ssh://git@ssh.github.com/${owner}/${repo}.git`;
 
 if (clone) {
-  execSync(`git clone ${url}`);
+  process.stderr.write(`${url}\n`);
+  execSync(`git clone ${url}`, { stdio: "inherit" });
 } else {
   process.stdout.write(url);
-  process.stderr.write("\n");
 }
